@@ -1,0 +1,73 @@
+<%- include('./partials/header') %>
+
+<header class="header min-h-screen w-full flex flex-col justify-center items-start px-6 sm:px-10 gap-2 bg-gray-900" data-aos="fade-in">
+  <h1
+    data-aos="fade-down"
+    class="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] text-gray-200 uppercase max-w-[90%] sm:max-w-[80%] leading-[40px] sm:leading-[60px] font-bold"
+  >
+    Empower Change Anonymously
+  </h1>
+
+  <p
+    data-aos="fade-up"
+    class="text-gray-300 text-lg sm:text-xl lg:text-2xl max-w-[90%] sm:max-w-[80%] leading-tight"
+  >
+    Submit your suggestions or report issues without revealing your identity.
+  </p>
+
+  <div
+    class="cta flex flex-col sm:flex-row gap-4 mt-4"
+    data-aos="fade-up"
+    data-aos-delay="200"
+  >
+    <a
+      href="/report"
+      class="p-3 px-6 rounded w-full sm:w-[200px] bg-green-500 text-white font-semibold text-center transition-all duration-300 hover:bg-green-600 hover:scale-105 shadow-md"
+    >
+      Submit Report
+    </a>
+    <a
+      href="/report"
+      class="p-3 px-6 rounded  w-full sm:w-[200px] bg-green-500 text-white font-semibold text-center transition-all duration-300 hover:bg-green-600 hover:scale-105 shadow-md"
+    >
+      Submit Suggestions
+    </a>
+  </div>
+</header>
+
+<section id="How" class="bg-gray-900 text-white py-16 px-6" data-aos="fade-up">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-6 text-green-400">How It Works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="text-5xl text-green-400 mb-4"><i class="fas fa-edit"></i></div>
+        <h3 class="text-xl font-semibold mb-2">Write</h3>
+        <p class="text-gray-300">Describe your concern, suggestion, or report in your own words—clearly and anonymously.</p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="text-5xl text-green-400 mb-4"><i class="fas fa-shield-alt"></i></div>
+        <h3 class="text-xl font-semibold mb-2">Submit</h3>
+        <p class="text-gray-300">No login or name required. Your report is submitted securely and privately.</p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="text-5xl text-green-400 mb-4"><i class="fas fa-check-circle"></i></div>
+        <h3 class="text-xl font-semibold mb-2">Get Heard</h3>
+        <p class="text-gray-300">Admin teams receive and review your report—action is taken without exposing your identity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bg-gray-100 text-white py-16 px-6" data-aos="fade-up">
+  <div class="max-w-4xl mx-auto text-center">
+        <div class="text-5xl text-green-400 mb-4"><i class="fas fa-shield-alt"></i></div>
+    <h2 class="text-3xl font-bold mb-6 text-green-400">Why Stay Anonymous?</h2>
+    <p class="text-gray-600 text-lg mb-6">
+      Speaking up can be hard—especially when you're afraid of backlash, judgment, or not being taken seriously.
+    </p>
+    <p class="text-gray-600 text-md">
+      This platform allows you to share your concerns freely. No names. No accounts. Just your voice—and real change.
+    </p>
+  </div>
+</section>
+
+<%- include('./partials/footer') %>

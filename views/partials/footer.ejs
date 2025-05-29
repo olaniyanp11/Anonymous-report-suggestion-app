@@ -1,0 +1,46 @@
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true,
+  });
+</script>
+<footer class="bg-gray-900 text-gray-400 py-10 mt-16">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    <!-- Brand Info -->
+    <div>
+      <h2 class="text-xl font-semibold text-white mb-2">Anonymous Report</h2>
+      <p class="text-sm">Empowering change through private, secure, and anonymous feedback. Speak up, stay safe.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
+      <ul class="space-y-2">
+        <li><a href="/" class="hover:text-white transition">Home</a></li>
+        <li><a href="/about" class="hover:text-white transition">About</a></li>
+        <li><a href="/report" class="hover:text-white transition">Submit Report</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact / Legal -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-3">Connect</h3>
+      <p class="text-sm mb-2">Have questions or need support?</p>
+      <a href="mailto:support@example.com" class="text-green-400 hover:underline">support@example.com</a>
+      <div class="mt-4">
+        <p class="text-xs text-gray-500">© <span id="year"></span> Anonymous Report. All rights reserved.</p>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  // Auto-fill current year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Admin Dashboard" %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100">
+
+<!-- Navbar -->
+<nav class="w-full fixed top-0 left-0 right-0 z-50 bg-gray-900 px-6 py-4 flex justify-between items-center shadow-md">
+  <a href="/" class="text-2xl uppercase font-bold text-gray-200 hover:text-white transition-colors duration-300">
+    <%= user?.name || "Admin" %>
+  </a>
+  <div class="hidden md:flex items-center space-x-6 text-gray-400">
+    <a href="/" class="hover:text-white transition-colors duration-300">Home</a>
+    <a href="/about" class="hover:text-white transition-colors duration-300">About</a>
+    <a href="/logout" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition-all duration-300 shadow-md hover:scale-105 font-semibold">
+      Logout
+    </a>
+  </div>
+  <button id="menu-toggle" class="md:hidden text-2xl text-gray-400 focus:outline-none">
+    <i class="fas fa-bars"></i>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="md:hidden fixed top-16 left-0 right-0 bg-gray-800 px-6 py-4 flex flex-col space-y-4 text-gray-300 hidden z-40">
+  <a href="/" class="hover:text-white transition">Home</a>
+  <a href="/about" class="hover:text-white transition">About</a>
+  <a href="/logout" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition font-semibold text-center">
+    Logout
+  </a>
+</div>
+
+<!-- Dashboard Layout -->
+<div class="flex min-h-screen pt-16">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 hidden md:block">
+    <div class="p-6 text-2xl font-bold text-green-400">Admin Panel</div>
+    <nav class="px-6 space-y-2">
+      <a href="/admin/dashboard" class="block py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
+      <a href="/admin/reports" class="block py-2 px-4 rounded hover:bg-gray-700">All Reports</a>
+      <a href="/admin/responded" class="block py-2 px-4 rounded hover:bg-gray-700">Responded</a>
+      <a href="/logout" class="block py-2 px-4 rounded hover:bg-red-600 text-white">Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-6">
+    <header class="mb-6 flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Dashboard</h1>
+      <div class="text-sm text-gray-400">Welcome, <%= user?.name || "Admin" %></div>
+    </header>
+<!-- Stat -->
+<!-- Stat Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+  <!-- Reports Stats -->
+  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-2">Total Reports</h2>
+    <p class="text-3xl text-green-400"><%= totalReports %></p>
+  </div>
+  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-2">Pending Reports</h2>
+    <p class="text-3xl text-yellow-400"><%= pendingReports %></p>
+  </div>
+  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-2">Responded Reports</h2>
+    <p class="text-3xl text-blue-400"><%= respondedReports %></p>
+  </div>
+
+  <!-- Suggestions Stats -->
+  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-2">Total Suggestions</h2>
+    <p class="text-3xl text-green-400"><%= totalSuggestions %></p>
+  </div>
+  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-2">Pending Suggestions</h2>
+    <p class="text-3xl text-yellow-400"><%= pendingSuggestions %></p>
+  </div>
+  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-2">Responded Suggestions</h2>
+    <p class="text-3xl text-blue-400"><%= respondedSuggestions %></p>
+  </div>
+</div>
+
+<!-- Recent Reports -->
+<section class="mt-10">
+  <h3 class="text-xl font-semibold mb-4">Recent Reports</h3>
+  <div class="bg-gray-800 p-4 rounded-lg">
+    <ul class="space-y-3">
+      <% recentReports.forEach((report) => { %>
+        <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
+          <!-- Checkbox -->
+          <input
+            type="checkbox"
+            class="mt-1 checkbox-report accent-green-500 cursor-pointer"
+            data-id="<%= report._id %>"
+            data-type="report"
+            title="Mark report as responded"
+          />
+
+          <!-- Content -->
+          <div class="flex-1 cursor-pointer toggle-message" data-id="<%= report._id %>" data-type="report">
+            <span class="text-green-300 font-semibold">#<%= report._id %></span> -
+            <%= report.title %>
+            <div class="text-gray-400 text-sm hidden mt-1" id="msg-report-<%= report._id %>">
+              <%= report.message %>
+            </div>
+            <div class="text-xs text-gray-500 mt-1">Submitted: <%= report.createdAt.toLocaleString() %></div>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</section>
+
+<!-- Recent Suggestions -->
+<section class="mt-10">
+  <h3 class="text-xl font-semibold mb-4">Recent Suggestions</h3>
+  <div class="bg-gray-800 p-4 rounded-lg">
+    <ul class="space-y-3">
+      <% recentSuggestions.forEach((suggestion) => { %>
+        <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
+          <!-- Checkbox -->
+          <input
+            type="checkbox"
+            class="mt-1 checkbox-suggestion accent-yellow-400 cursor-pointer"
+            data-id="<%= suggestion._id %>"
+            data-type="suggestion"
+            title="Mark suggestion as responded"
+          />
+
+          <!-- Content -->
+          <div class="flex-1 cursor-pointer toggle-message" data-id="<%= suggestion._id %>" data-type="suggestion">
+            <span class="text-yellow-300 font-semibold">#<%= suggestion._id %></span> -
+            <%= suggestion.title %>
+            <div class="text-gray-400 text-sm hidden mt-1" id="msg-suggestion-<%= suggestion._id %>">
+              <%= suggestion.message %>
+            </div>
+            <div class="text-xs text-gray-500 mt-1">Submitted: <%= suggestion.createdAt.toLocaleString() %></div>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</section>
+
+  </div>
+</div>
+<script>
+  // Toggle message visibility
+  document.querySelectorAll('.toggle-message').forEach((el) => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.id;
+      const type = el.dataset.type;
+      const msgEl = document.getElementById(`msg-${type}-${id}`);
+      if (msgEl) msgEl.classList.toggle('hidden');
+    });
+  });
+
+  // Handle checkbox update for reports and suggestions
+  document.querySelectorAll('.checkbox-report, .checkbox-suggestion').forEach((checkbox) => {
+  checkbox.addEventListener('click', async (e) => {
+    e.stopPropagation(); // Prevent toggle
+    const id = checkbox.dataset.id;
+    const type = checkbox.dataset.type;
+    const isChecked = checkbox.checked;
+    const url = `/admin/${type}s/${id}/respond`;
+
+    checkbox.disabled = true;
+    try {
+      const res = await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ responded: isChecked }) // <-- Send true or false
+      });
+
+      if (res.ok) {
+        alert(`Marked ${type} as ${isChecked ? 'responded' : 'not responded'}`);
+      } else {
+        alert(`Failed to update ${type}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert(`Error updating ${type}`);
+    } finally {
+      checkbox.disabled = false;
+    }
+  });
+});
+
+</script>
+
+
+<script>
+  const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+</script>
+
+<%- include('../partials/footer') %>
