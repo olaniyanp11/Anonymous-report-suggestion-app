@@ -132,7 +132,7 @@ router.post('/report', async (req,res)=>{
         res.render('report', { title: 'Report', error: 'An error occurred while submitting the report.' });
     }
 })
-router.patch('/admin/reports/:id/respond', async (req, res) => {
+router.patch('/admin/reports/:id/respond',authenticateToken, async (req, res) => {
   const { responded } = req.body;
   console.log('Responded:', responded);
   try {
@@ -143,29 +143,59 @@ router.patch('/admin/reports/:id/respond', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.get('/admin/reports', async (req, res) => {
+router.get('/admin/reports',authenticateToken,  async (req, res) => {
   try {
     const reports = await Report.find().sort({ createdAt: -1 });
-    res.render('protected/reports', { title: 'Reports', reports });
+    const user = await User.findById(req.user.userId);
+     const totalReports = await Report.countDocuments();
+  const totalSuggestions = await Suggestion.countDocuments();
+  const pendingReports = await Report.countDocuments({ sorted: false });
+  const respondedReports = await Report.countDocuments({ sorted: true });
+    const pendingSuggestions = await Suggestion.countDocuments({ sorted: false });
+    const respondedSuggestions = await Suggestion.countDocuments({ sorted: true });
+  const recentReports = await Report.find()
+    .sort({ createdAt: -1 })
+    .limit(5);
+    const recentSuggestions = await Suggestion.find()
+    .sort({ createdAt: -1 }).limit(5);
+
+    if (!user) return res.redirect('/login');
+    res.render('protected/all', { title: 'Reports', reports,user, totalReports, totalSuggestions, pendingReports, pendingSuggestions, respondedSuggestions, respondedReports, recentReports, recentSuggestions });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error fetching reports');
   }
 });
-router.get('/admin/suggestions', async (req, res) => {
+router.get('/admin/suggestion',authenticateToken, async (req, res) => {
   try {
     const suggestions = await Suggestion.find().sort({ createdAt: -1 });
-    res.render('protected/suggestions', { title: 'Suggestions', suggestions });
+      const totalReports = await Report.countDocuments();
+  const totalSuggestions = await Suggestion.countDocuments();
+  const pendingReports = await Report.countDocuments({ sorted: false });
+  const respondedReports = await Report.countDocuments({ sorted: true });
+    const pendingSuggestions = await Suggestion.countDocuments({ sorted: false });
+    const respondedSuggestions = await Suggestion.countDocuments({ sorted: true });
+  const recentReports = await Report.find()
+    .sort({ createdAt: -1 })
+    .limit(5);
+    const recentSuggestions = await Suggestion.find()
+    .sort({ createdAt: -1 }).limit(5);
+      const user = await User.findById(req.user.userId);
+  if (!user) return res.redirect('/login');
+  console.log('User found:', user);
+    res.render('protected/sug', { title: 'Suggestions', suggestions, user: user, totalReports, totalSuggestions, pendingReports, pendingSuggestions, respondedSuggestions, respondedReports, recentReports, recentSuggestions });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error fetching suggestions');
   }
 });
-router.patch('/admin/suggestions/:id/respond', async (req, res) => {
+router.patch('/admin/suggestions/:id/respond',authenticateToken, async (req, res) => {
   try {
     // Update the suggestion status to 'responded'
+    const { responded } = req.body;
+    console.log('Responded:', responded);
 
-    await Suggestion.findByIdAndUpdate(req.params.id, { status: 'responded' });
+    await Suggestion.findByIdAndUpdate(req.params.id, { sorted: true ? responded : false });
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
