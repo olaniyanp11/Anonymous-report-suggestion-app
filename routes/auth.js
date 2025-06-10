@@ -196,6 +196,7 @@ router.patch('/admin/suggestions/:id/respond',authenticateToken, async (req, res
     console.log('Responded:', responded);
 
     await Suggestion.findByIdAndUpdate(req.params.id, { sorted: true ? responded : false });
+    
     res.sendStatus(200);
   } catch (err) {
     console.error(err);

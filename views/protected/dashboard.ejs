@@ -146,6 +146,7 @@
 
       if (res.ok) {
         alert(`Marked ${type} as ${isChecked ? 'responded' : 'not responded'}`);
+        window.location.reload(); // Reload to reflect changes
       } else {
         alert(`Failed to update ${type}`);
       }
