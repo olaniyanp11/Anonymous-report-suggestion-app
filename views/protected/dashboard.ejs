@@ -3,121 +3,123 @@
 <div class="flex min-h-screen pt-16">
   <!-- Sidebar -->
   <aside class="w-64 bg-gray-800 hidden md:block">
-    <div class="p-6 text-2xl font-bold text-green-400">Admin Panel</div>
-    <nav class="px-6 space-y-2">
-      <a href="/admin/dashboard" class="block py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
-      <a href="/admin/reports" class="block py-2 px-4 rounded hover:bg-gray-700">All Reports</a>
-      <a href="/admin/suggestion" class="block py-2 px-4 rounded hover:bg-gray-700">All Suggestions</a>
-      <a href="/logout" class="block py-2 px-4 rounded hover:bg-red-600 text-white">Logout</a>
+    <div class="p-6 text-2xl font-bold text-green-400">
+      <i class="fas fa-user-shield mr-2"></i> Admin Panel
+    </div>
+    <nav class="px-6 space-y-2 text-white">
+      <a href="/dashboard" class="block py-2 px-4 rounded hover:bg-gray-700">
+        <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+      </a>
+      <a href="/admin/reports" class="block py-2 px-4 rounded hover:bg-gray-700">
+        <i class="fas fa-exclamation-circle mr-2"></i> All Reports
+      </a>
+      <a href="/admin/suggestion" class="block py-2 px-4 rounded hover:bg-gray-700">
+        <i class="fas fa-lightbulb mr-2"></i> All Suggestions
+      </a>
+      <a href="/logout" class="block py-2 px-4 rounded hover:bg-red-600 text-white">
+        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+      </a>
     </nav>
   </aside>
 
   <!-- Main Content -->
   <div class="flex-1 p-6">
-    <header class="mb-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Dashboard</h1>
+    <header class="mb-6 flex justify-between items-center text-white">
+      <h1 class="text-3xl font-bold"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</h1>
       <div class="text-sm text-gray-400">Welcome, <%= user?.name || "Admin" %></div>
     </header>
-<!-- Stat -->
-<!-- Stat Section -->
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-  <!-- Reports Stats -->
-  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
-    <h2 class="text-lg font-semibold mb-2">Total Reports</h2>
-    <p class="text-3xl text-green-400"><%= totalReports %></p>
-  </div>
-  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
-    <h2 class="text-lg font-semibold mb-2">Pending Reports</h2>
-    <p class="text-3xl text-yellow-400"><%= pendingReports %></p>
-  </div>
-  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
-    <h2 class="text-lg font-semibold mb-2">Responded Reports</h2>
-    <p class="text-3xl text-blue-400"><%= respondedReports %></p>
-  </div>
 
-  <!-- Suggestions Stats -->
-  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
-    <h2 class="text-lg font-semibold mb-2">Total Suggestions</h2>
-    <p class="text-3xl text-green-400"><%= totalSuggestions %></p>
-  </div>
-  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
-    <h2 class="text-lg font-semibold mb-2">Pending Suggestions</h2>
-    <p class="text-3xl text-yellow-400"><%= pendingSuggestions %></p>
-  </div>
-  <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
-    <h2 class="text-lg font-semibold mb-2">Responded Suggestions</h2>
-    <p class="text-3xl text-blue-400"><%= respondedSuggestions %></p>
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-white">
+        <h2 class="text-lg font-semibold mb-2"><i class="fas fa-bug mr-2 text-green-300"></i>Total Reports</h2>
+        <p class="text-3xl text-green-400"><%= totalReports %></p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-white">
+        <h2 class="text-lg font-semibold mb-2"><i class="fas fa-hourglass-half mr-2 text-yellow-300"></i>Pending Reports</h2>
+        <p class="text-3xl text-yellow-400"><%= pendingReports %></p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-white">
+        <h2 class="text-lg font-semibold mb-2"><i class="fas fa-check-circle mr-2 text-blue-300"></i>Responded Reports</h2>
+        <p class="text-3xl text-blue-400"><%= respondedReports %></p>
+      </div>
+
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-white">
+        <h2 class="text-lg font-semibold mb-2"><i class="fas fa-comments mr-2 text-green-300"></i>Total Suggestions</h2>
+        <p class="text-3xl text-green-400"><%= totalSuggestions %></p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-white">
+        <h2 class="text-lg font-semibold mb-2"><i class="fas fa-clock mr-2 text-yellow-300"></i>Pending Suggestions</h2>
+        <p class="text-3xl text-yellow-400"><%= pendingSuggestions %></p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-white">
+        <h2 class="text-lg font-semibold mb-2"><i class="fas fa-thumbs-up mr-2 text-blue-300"></i>Responded Suggestions</h2>
+        <p class="text-3xl text-blue-400"><%= respondedSuggestions %></p>
+      </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <section class="mt-10 text-white">
+      <h3 class="text-xl font-semibold mb-4"><i class="fas fa-clipboard-list mr-2"></i>Recent Reports</h3>
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <ul class="space-y-3">
+          <% recentReports.forEach((report) => { %>
+            <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
+              <input
+                type="checkbox"
+                class="mt-1 checkbox-report accent-green-500 cursor-pointer"
+                data-id="<%= report._id %>"
+                data-type="report"
+                title="Mark report as responded"
+                <%= report.sorted ? 'checked' : '' %>
+              />
+              <div class="flex-1 cursor-pointer toggle-message" data-id="<%= report._id %>" data-type="report">
+                <span class="text-green-300 font-semibold">#<%= report._id %></span> -
+                <%= report.title %>
+                <div class="text-gray-400 text-sm hidden mt-1" id="msg-report-<%= report._id %>">
+                  <%= report.message %>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">Submitted: <%= report.createdAt.toLocaleString() %></div>
+              </div>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Recent Suggestions -->
+    <section class="mt-10 text-white">
+      <h3 class="text-xl font-semibold mb-4"><i class="fas fa-lightbulb mr-2"></i>Recent Suggestions</h3>
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <ul class="space-y-3">
+          <% recentSuggestions.forEach((suggestion) => { %>
+            <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
+              <input
+                type="checkbox"
+                class="mt-1 checkbox-suggestion accent-yellow-400 cursor-pointer"
+                data-id="<%= suggestion._id %>"
+                data-type="suggestion"
+                title="Mark suggestion as responded"
+                <%= suggestion.sorted ? 'checked' : '' %>
+              />
+              <div class="flex-1 cursor-pointer toggle-message" data-id="<%= suggestion._id %>" data-type="suggestion">
+                <span class="text-yellow-300 font-semibold">#<%= suggestion._id %></span> -
+                <%= suggestion.title %>
+                <div class="text-gray-400 text-sm hidden mt-1" id="msg-suggestion-<%= suggestion._id %>">
+                  <%= suggestion.message %>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">Submitted: <%= suggestion.createdAt.toLocaleString() %></div>
+              </div>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </section>
   </div>
 </div>
 
-<!-- Recent Reports -->
-<section class="mt-10">
-  <h3 class="text-xl font-semibold mb-4">Recent Reports</h3>
-  <div class="bg-gray-800 p-4 rounded-lg">
-    <ul class="space-y-3">
-      <% recentReports.forEach((report) => { %>
-        <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
-          <!-- Checkbox -->
-          <input
-            type="checkbox"
-            class="mt-1 checkbox-report accent-green-500 cursor-pointer"
-            data-id="<%= report._id %>"
-            data-type="report"
-            title="Mark report as responded"
-            <%= report.sorted ? 'checked' : '' %>
-          />
-
-          <!-- Content -->
-          <div class="flex-1 cursor-pointer toggle-message" data-id="<%= report._id %>" data-type="report">
-            <span class="text-green-300 font-semibold">#<%= report._id %></span> -
-            <%= report.title %>
-            <div class="text-gray-400 text-sm hidden mt-1" id="msg-report-<%= report._id %>">
-              <%= report.message %>
-            </div>
-            <div class="text-xs text-gray-500 mt-1">Submitted: <%= report.createdAt.toLocaleString() %></div>
-          </div>
-        </li>
-      <% }); %>
-    </ul>
-  </div>
-</section>
-
-<!-- Recent Suggestions -->
-<section class="mt-10">
-  <h3 class="text-xl font-semibold mb-4">Recent Suggestions</h3>
-  <div class="bg-gray-800 p-4 rounded-lg">
-    <ul class="space-y-3">
-      <% recentSuggestions.forEach((suggestion) => { %>
-        <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
-          <!-- Checkbox -->
-          <input
-            type="checkbox"
-            class="mt-1 checkbox-suggestion accent-yellow-400 cursor-pointer"
-            data-id="<%= suggestion._id %>"
-            data-type="suggestion"
-            title="Mark suggestion as responded"
-            <%= suggestion.sorted ? 'checked' : '' %>
-          />
-
-          <!-- Content -->
-          <div class="flex-1 cursor-pointer toggle-message" data-id="<%= suggestion._id %>" data-type="suggestion">
-            <span class="text-yellow-300 font-semibold">#<%= suggestion._id %></span> -
-            <%= suggestion.title %>
-            <div class="text-gray-400 text-sm hidden mt-1" id="msg-suggestion-<%= suggestion._id %>">
-              <%= suggestion.message %>
-            </div>
-            <div class="text-xs text-gray-500 mt-1">Submitted: <%= suggestion.createdAt.toLocaleString() %></div>
-          </div>
-        </li>
-      <% }); %>
-    </ul>
-  </div>
-</section>
-
-  </div>
-</div>
+<!-- Scripts -->
 <script>
-  // Toggle message visibility
   document.querySelectorAll('.toggle-message').forEach((el) => {
     el.addEventListener('click', () => {
       const id = el.dataset.id;
@@ -127,46 +129,35 @@
     });
   });
 
-  // Handle checkbox update for reports and suggestions
   document.querySelectorAll('.checkbox-report, .checkbox-suggestion').forEach((checkbox) => {
-  checkbox.addEventListener('click', async (e) => {
-    e.stopPropagation(); // Prevent toggle
-    const id = checkbox.dataset.id;
-    const type = checkbox.dataset.type;
-    const isChecked = checkbox.checked;
-    const url = `/admin/${type}s/${id}/respond`;
+    checkbox.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const id = checkbox.dataset.id;
+      const type = checkbox.dataset.type;
+      const isChecked = checkbox.checked;
+      const url = `/admin/${type}s/${id}/respond`;
 
-    checkbox.disabled = true;
-    try {
-      const res = await fetch(url, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ responded: isChecked }) // <-- Send true or false
-      });
+      checkbox.disabled = true;
+      try {
+        const res = await fetch(url, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ responded: isChecked })
+        });
 
-      if (res.ok) {
-        alert(`Marked ${type} as ${isChecked ? 'responded' : 'not responded'}`);
-        window.location.reload(); // Reload to reflect changes
-      } else {
-        alert(`Failed to update ${type}`);
+        if (res.ok) {
+          alert(`Marked ${type} as ${isChecked ? 'responded' : 'not responded'}`);
+          window.location.reload();
+        } else {
+          alert(`Failed to update ${type}`);
+        }
+      } catch (err) {
+        console.error(err);
+        alert(`Error updating ${type}`);
+      } finally {
+        checkbox.disabled = false;
       }
-    } catch (err) {
-      console.error(err);
-      alert(`Error updating ${type}`);
-    } finally {
-      checkbox.disabled = false;
-    }
-  });
-});
-
-</script>
-
-
-<script>
-  const toggleBtn = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  toggleBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
+    });
   });
 </script>
 
