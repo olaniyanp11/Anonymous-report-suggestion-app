@@ -1,4 +1,5 @@
-<%-include("./partials/header")%>
+<%- include('../partials/header') %>
+
 <div class="flex min-h-screen pt-16">
   <!-- Sidebar -->
   <aside class="w-64 bg-gray-800 hidden md:block">
@@ -20,89 +21,110 @@
       </a>
     </nav>
   </aside>
+
   <div class="w-[70%] mx-auto">
-<section class="mt-10 py-16 ">
-  <h3 class="text-xl font-semibold mt-4 text-center">Recent Suggestions</h3>
-  <div class="bg-gray-800 p-4 rounded-lg">
-    <ul class="space-y-3">
-      <% recentSuggestions.forEach((suggestion) => { %>
-        <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
-          <!-- Checkbox -->
-          <input
-            type="checkbox"
-            class="mt-1 checkbox-suggestion accent-yellow-400 cursor-pointer"
-            data-id="<%= suggestion._id %>"
-            data-type="suggestion"
-            title="Mark suggestion as responded"
-            <%=suggestion.sorted  ? 'checked' : '' %>
-          />
 
-          <!-- Content -->
-          <div class="flex-1 cursor-pointer toggle-message" data-id="<%= suggestion._id %>" data-type="suggestion">
-            <span class="text-yellow-300 font-semibold"></span> -
-            <%= suggestion.title %>
-            <div class="text-gray-400 text-sm hidden mt-1" id="msg-suggestion-<%= suggestion._id %>">
-              <%= suggestion.message %>
-            </div>
-            <div class="text-xs text-gray-500 mt-1">Submitted: <%= suggestion.createdAt.toLocaleString() %></div>
-          </div>
-        </li>
-      <% }); %>
-    </ul>
+    <!-- Small Suggestions Pie Chart -->
+    <section class="mt-10 bg-gray-800 p-4 rounded-lg w-full max-w-sm mx-auto">
+      <h3 class="text-lg font-semibold mb-4 text-center text-white">Suggestions Responded vs Pending</h3>
+      <canvas id="suggestionsPieChart" width="300" height="150"></canvas>
+    </section>
+
+    <!-- Recent Suggestions Section -->
+    <section class="mt-10 py-16">
+      <h3 class="text-xl font-semibold mt-4 text-center text-white">Recent Suggestions</h3>
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <ul class="space-y-3">
+          <% recentSuggestions.forEach((suggestion) => { %>
+            <li class="border-b border-gray-700 pb-2 flex items-start gap-3">
+              <input
+                type="checkbox"
+                class="mt-1 checkbox-suggestion accent-yellow-400 cursor-pointer"
+                data-id="<%= suggestion._id %>"
+                data-type="suggestion"
+                title="Mark suggestion as responded"
+                <%= suggestion.sorted ? 'checked' : '' %>
+              />
+              <div class="flex-1 cursor-pointer toggle-message" data-id="<%= suggestion._id %>" data-type="suggestion">
+                <span class="text-yellow-300 font-semibold"></span> -
+                <%= suggestion.title %>
+                <div class="text-gray-400 text-sm hidden mt-1" id="msg-suggestion-<%= suggestion._id %>">
+                  <%= suggestion.message %>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">Submitted: <%= suggestion.createdAt.toLocaleString() %></div>
+              </div>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </section>
+
   </div>
-</section>
 </div>
-</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.querySelectorAll('.toggle-message').forEach(item => {
-        item.addEventListener('click', event => {
-        const msgId = `msg-${item.dataset.type}-${item.dataset.id}`;
-        const msgElement = document.getElementById(msgId);
-        if (msgElement) {
-            msgElement.classList.toggle('hidden');
+  // Toggle suggestion message
+  document.querySelectorAll('.toggle-message').forEach(item => {
+    item.addEventListener('click', () => {
+      const msgId = `msg-${item.dataset.type}-${item.dataset.id}`;
+      const msgElement = document.getElementById(msgId);
+      if(msgElement) msgElement.classList.toggle('hidden');
+    });
+  });
+
+  // Checkbox click handler
+  document.querySelectorAll('.checkbox-suggestion').forEach((checkbox) => {
+    checkbox.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const id = checkbox.dataset.id;
+      const type = checkbox.dataset.type;
+      const isChecked = checkbox.checked;
+      const url = `/admin/${type}s/${id}/respond`;
+
+      checkbox.disabled = true;
+      try {
+        const res = await fetch(url, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ responded: isChecked })
+        });
+        if(res.ok) {
+          alert(`Marked ${type} as ${isChecked ? 'responded' : 'not responded'}`);
+        } else {
+          alert(`Failed to update ${type}`);
         }
-        });
-    });
-    
-    document.querySelectorAll('.checkbox-report').forEach(item => {
-        item.addEventListener('change', event => {
-        const reportId = item.dataset.id;
-        const reportType = item.dataset.type;
-        // Handle the checkbox change logic here
-        console.log(`Checkbox for ${reportType} with ID ${reportId} changed.`);
-        });
-    });
-      document.querySelectorAll('.checkbox-report, .checkbox-suggestion').forEach((checkbox) => {
-  checkbox.addEventListener('click', async (e) => {
-    e.stopPropagation(); // Prevent toggle
-    const id = checkbox.dataset.id;
-    const type = checkbox.dataset.type;
-    const isChecked = checkbox.checked;
-    const url = `/admin/${type}s/${id}/respond`;
-
-    checkbox.disabled = true;
-    try {
-      const res = await fetch(url, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ responded: isChecked }) // <-- Send true or false
-      });
-
-      if (res.ok) {
-        alert(`Marked ${type} as ${isChecked ? 'responded' : 'not responded'}`);
-      } else {
-        alert(`Failed to update ${type}`);
+      } catch(err) {
+        console.error(err);
+        alert(`Error updating ${type}`);
+      } finally {
+        checkbox.disabled = false;
       }
-    } catch (err) {
-      console.error(err);
-      alert(`Error updating ${type}`);
-    } finally {
-      checkbox.disabled = false;
+    });
+  });
+
+  // Suggestions Pie Chart
+  const suggestionsCtx = document.getElementById('suggestionsPieChart').getContext('2d');
+  const suggestionsPieChart = new Chart(suggestionsCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Responded', 'Pending'],
+      datasets: [{
+        data: [<%= respondedSuggestions %>, <%= pendingSuggestions %>],
+        backgroundColor: ['rgba(34,197,94,0.7)', 'rgba(234,179,8,0.7)'],
+        borderColor: ['rgba(34,197,94,1)', 'rgba(234,179,8,1)'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { 
+        legend: { position: 'bottom' },
+        title: { display: true, text: 'Suggestions Status' }
+      }
     }
   });
-});
-
 </script>
+
 <%- include('../partials/footer') %>
-<!--           <input type="checkbox" class="form-checkbox h-5 w-5 text-green-400">
- -->

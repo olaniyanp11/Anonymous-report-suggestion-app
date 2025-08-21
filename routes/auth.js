@@ -19,8 +19,9 @@ router.get('/login', (req, res) => {
 router.get('/thank-you', (req, res) => {
     res.render('thank', { title: 'thank-you', error:null });
 })
-router.get('/report', (req, res) => {
-    res.render('report', { title: 'Report', error:null });
+router.get('/report', async (req, res) => {
+   const reportsCount = await Report.countDocuments();
+    res.render('report', { title: 'Report', error:null, reportsCount });
 })
 
 
@@ -149,6 +150,7 @@ router.get('/admin/reports',authenticateToken,  async (req, res) => {
     const user = await User.findById(req.user.userId);
      const totalReports = await Report.countDocuments();
   const totalSuggestions = await Suggestion.countDocuments();
+ const  reportsCount = await Report.countDocuments();
   const pendingReports = await Report.countDocuments({ sorted: false });
   const respondedReports = await Report.countDocuments({ sorted: true });
     const pendingSuggestions = await Suggestion.countDocuments({ sorted: false });
@@ -160,7 +162,7 @@ router.get('/admin/reports',authenticateToken,  async (req, res) => {
     .sort({ createdAt: -1 }).limit(5);
 
     if (!user) return res.redirect('/login');
-    res.render('protected/all', { title: 'Reports', reports,user, totalReports, totalSuggestions, pendingReports, pendingSuggestions, respondedSuggestions, respondedReports, recentReports, recentSuggestions });
+    res.render('protected/all', { title: 'Reports', reports,user, totalReports,reportsCount, totalSuggestions, pendingReports, pendingSuggestions, respondedSuggestions, respondedReports, recentReports, recentSuggestions });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error fetching reports');
